@@ -6,7 +6,7 @@ import java.util.Collection;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.jm.server.enumeration.Status;
@@ -26,7 +26,6 @@ import org.slf4j.LoggerFactory;
 @Slf4j
 public class ServerServiceImp implements ServerService {
 
-    @Autowired
     ServerRepo serverRepo;
     private static final Logger log = LoggerFactory.getLogger(ServerServiceImp.class);
 
@@ -40,22 +39,30 @@ public class ServerServiceImp implements ServerService {
 
     @Override
     public Collection<Server> list(int limit) {
-        return null;
+        log.info("Fetching all servers: {}");
+
+        return serverRepo.findAll(PageRequest.of(0, limit)).toList();
     }
 
     @Override
     public Server getServer(Long id) {
-        return null;
+        log.info("Fetching server by ID {}", id);
+
+        return serverRepo.findById(id).get();
     }
 
     @Override
     public Server updateServer(Server server) {
-        return null;
+        log.info("Updating server: {}", server.getName());
+        return serverRepo.save(server);
+
     }
 
     @Override
     public Boolean deleteServer(Long id) {
-        return null;
+        log.info("Deleting server by ID: {}", id);
+        serverRepo.deleteById(id);
+        return Boolean.TRUE;
     }
 
     @Override
