@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Collection;
 
+import java.util.Random;
 import javax.transaction.Transactional;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.jm.server.enumeration.Status;
 import com.jm.server.model.Server;
@@ -26,7 +28,8 @@ import org.slf4j.LoggerFactory;
 @Slf4j
 public class ServerServiceImp implements ServerService {
 
-    ServerRepo serverRepo;
+    private final ServerRepo serverRepo;
+
     private static final Logger log = LoggerFactory.getLogger(ServerServiceImp.class);
 
     @Override
@@ -76,7 +79,9 @@ public class ServerServiceImp implements ServerService {
     }
 
     private String setServerImageUrl() {
-        return null;
+        String[] imageNames = { "server1.Png", "server2.Png", "server3.png", "server4.png" };
+        return ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/server/image/" + imageNames[new Random().nextInt(4)]).toUriString();
     }
 
 }
